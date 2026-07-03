@@ -1,6 +1,6 @@
 -- לוחות שיבוצים (שגרה, מלחמה וכו')
 create table if not exists public.shift_boards (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   name text not null,
   workers_per_shift integer not null default 1 check (workers_per_shift >= 1),
   single_person_for_day boolean not null default false,
@@ -40,7 +40,7 @@ create policy "Shift boards: manager can modify"
 
 -- לוח ברירת מחדל
 insert into public.shift_boards (id, name, workers_per_shift, single_person_for_day)
-select uuid_generate_v4(), 'שגרה', 1, false
+select gen_random_uuid(), 'שגרה', 1, false
 where not exists (select 1 from public.shift_boards limit 1);
 
 -- קישור משמרות קיימות ללוח ברירת מחדל

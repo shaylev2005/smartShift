@@ -1,6 +1,6 @@
 -- טבלת workers: רשימת אנשים לשיבוץ (יכולים להיות בלי משתמש במערכת)
 create table if not exists public.workers (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   full_name text not null,
   email text,
   user_id uuid references public.profiles(id) on delete set null,

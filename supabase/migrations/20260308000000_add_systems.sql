@@ -1,13 +1,13 @@
 -- טבלת מערכות – כל משתמש משתייך למערכת אחת
 create table if not exists public.systems (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   name text not null,
   created_at timestamptz not null default now()
 );
 
 -- מערכת ברירת מחדל: ראשית הצירים
 insert into public.systems (id, name)
-select uuid_generate_v4(), 'ראשית הצירים'
+select gen_random_uuid(), 'ראשית הצירים'
 where not exists (select 1 from public.systems limit 1);
 
 -- הוספת system_id ל-profiles
