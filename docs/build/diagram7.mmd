@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant U as משתמש
+    participant API as signup API
+    participant Auth as Supabase Auth
+    participant DB as profiles / workers
+    U->>API: POST /api/auth/signup
+    API->>Auth: יצירת משתמש (admin)
+    Auth-->>API: userId
+    API-->>U: requiresEmailConfirmation
+    Note over U,DB: לאחר התחברות ראשונה
+    U->>API: POST /api/profile/ensure
+    API->>DB: בדיקה - קיים profile?
+    alt לא קיים
+      API->>DB: יצירת profile (ראשון = מנהל)
+      API->>DB: קישור או יצירת worker
+    end
+    API-->>U: profile

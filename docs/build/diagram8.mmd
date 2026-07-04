@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant M as מנהל
+    participant UI as מסך השיבוצים
+    participant API as assignments API
+    participant SVC as assignments.service
+    participant DB as Supabase
+    M->>UI: בחירת עובד למשמרת
+    UI->>UI: בדיקת אילוץ מקומית
+    alt קיים אילוץ
+      UI->>M: אישור - לשבץ בכל זאת?
+      M->>UI: אישור
+    end
+    UI->>API: POST /api/assignments
+    API->>API: requireManager + ולידציה (Zod)
+    API->>SVC: createAssignment
+    SVC->>DB: assertShiftOwnership
+    SVC->>DB: אימות שהעובד באותה מערכת
+    SVC->>DB: INSERT assignment (UNIQUE)
+    DB-->>UI: Assignment (201)
