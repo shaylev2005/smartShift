@@ -1,0 +1,18 @@
+flowchart TD
+    subgraph Client["שכבת הלקוח (Browser)"]
+        UI["רכיבי React + Contexts"]
+        AF["apiFetch — עוטף בקשות ומצרף JWT"]
+    end
+    subgraph Server["שכבת השרת (Next.js)"]
+        MW["Middleware — בדיקת Authorization"]
+        API["API Routes — דקות ורזות"]
+        AUTH["requireUser / requireManager"]
+        SVC["Service Layer — לוגיקה עסקית"]
+    end
+    subgraph DB["Supabase"]
+        PG["PostgreSQL + RLS"]
+        SBAUTH["Auth (JWT)"]
+    end
+    UI --> AF --> MW --> API
+    API --> AUTH --> SVC --> PG
+    AUTH -.מאמת מול.-> SBAUTH

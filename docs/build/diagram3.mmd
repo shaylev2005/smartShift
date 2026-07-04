@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant C as לקוח
+    participant A as apiFetch
+    participant M as Middleware
+    participant R as API Route
+    participant Q as requireUser
+    participant S as Supabase
+    C->>A: קריאה ל-API
+    A->>A: שליפת token מ-Supabase
+    A->>M: בקשה + Bearer token
+    M->>M: בדיקת קיום כותרת Authorization
+    M->>R: העברה הלאה
+    R->>Q: requireUser(req)
+    Q->>S: auth.getUser(token)
+    S-->>Q: משתמש מאומת
+    Q->>S: שליפת profile
+    S-->>Q: profile
+    Q-->>R: ok, user, profile
+    R-->>C: JSON

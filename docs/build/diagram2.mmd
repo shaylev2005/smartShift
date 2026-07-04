@@ -1,0 +1,56 @@
+erDiagram
+    systems ||--o{ profiles : "שייך ל"
+    systems ||--o{ workers : "שייך ל"
+    systems ||--o{ shift_boards : "שייך ל"
+    profiles ||--o| workers : "מקושר (user_id)"
+    shift_boards ||--o{ shifts : "מכיל"
+    shifts ||--o{ assignments : "משובץ ב"
+    workers ||--o{ assignments : "משובץ ל"
+    profiles ||--o{ constraints : "מגדיר"
+
+    systems {
+        uuid id PK
+        text name
+    }
+    profiles {
+        uuid id PK
+        text full_name
+        text email
+        text role
+        uuid system_id FK
+        bool is_reserves
+    }
+    workers {
+        uuid id PK
+        text full_name
+        uuid user_id FK
+        uuid system_id FK
+        bool is_reserves
+    }
+    shift_boards {
+        uuid id PK
+        text name
+        int workers_per_shift
+        bool single_person_for_day
+        uuid system_id FK
+    }
+    shifts {
+        uuid id PK
+        date date
+        text type
+        uuid board_id FK
+        int required_count
+    }
+    assignments {
+        uuid id PK
+        uuid shift_id FK
+        uuid worker_id FK
+    }
+    constraints {
+        uuid id PK
+        uuid worker_id FK
+        date date
+        text type
+        text status
+        uuid recurring_group_id
+    }

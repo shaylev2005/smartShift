@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant M as מנהל
+    participant UI as מסך השיבוצים
+    participant API as autofill API
+    participant ALG as computeAutofillProposals
+    participant DB as Supabase
+    M->>UI: לחיצה על "שיבוץ אוטומטי"
+    UI->>API: POST /autofill (board, טווח)
+    API->>DB: שליפת משמרות, עובדים, אילוצים
+    API->>ALG: חישוב הצעות
+    ALG-->>API: רשימת הצעות מדורגת
+    API-->>UI: הצעות לתצוגה מקדימה
+    M->>UI: עריכה/אישור
+    UI->>API: POST /autofill/apply (הוספות/הסרות)
+    API->>DB: יצירת משמרות + שמירת שיבוצים
+    DB-->>UI: אישור
